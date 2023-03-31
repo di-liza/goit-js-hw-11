@@ -1,0 +1,226 @@
+.hidden {
+  display: none;
+}
+// /* Основные стили */
+
+// body {
+//   background-color: #000000;
+//   color: #ffffff;
+//   font-family: 'Press Start 2P', monospace;
+//   font-size: 16px;
+//   line-height: 1.6;
+//   margin: 0;
+//   padding: 0;
+// }
+
+// h1,
+// h2,
+// h3,
+// h4,
+// h5,
+// h6 {
+//   font-family: 'Press Start 2P', monospace;
+//   font-weight: normal;
+//   margin: 0 0 1rem;
+// }
+
+// a {
+//   color: #ffffff;
+//   text-decoration: none;
+// }
+
+// a:hover {
+//   color: #ffcc00;
+// }
+
+// button {
+//   background-color: #ffcc00;
+//   border: none;
+//   border-radius: 5px;
+//   color: #000000;
+//   cursor: pointer;
+//   font-size: 1rem;
+//   padding: 0.75rem 1.5rem;
+//   transition: background-color 0.3s ease;
+// }
+
+// button:hover {
+//   background-color: #ff9900;
+// }
+
+// input[type="text"] {
+//   background-color: transparent;
+//   border: none;
+//   border-bottom: 2px solid #ffffff;
+//   color: #ffffff;
+//   font-size: 1.2rem;
+//   margin-right: 1rem;
+//   padding: 0.5rem;
+//   transition: border-color 0.3s ease;
+//   width: 100%;
+// }
+
+// input[type="text"]:focus {
+//   border-color: #ffcc00;
+//   outline: none;
+// }
+
+// /* Стили формы поиска */
+
+// .search-form {
+//   display: flex;
+//   margin-bottom: 2rem;
+// }
+
+// /* Стили галереи изображений */
+
+// .gallery {
+//   display: grid;
+//   grid-gap: 1rem;
+//   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+// }
+
+// .gallery img {
+//   border-radius: 5px;
+//   box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+//   display: block;
+//   height: auto;
+//   max-width: 100%;
+//   transition: box-shadow 0.3s ease;
+// }
+
+// .gallery img:hover {
+//   box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+//   transform: scale(1.05);
+// }
+
+// /* Стили кнопки "Load more" */
+
+// .load-more {
+//   display: block;
+//   margin: 2rem auto;
+//   background-color: #ffcc00;
+//   border: 2px solid #ffffff;
+//   border-radius: 5px;
+//   color: #000000;
+//   font-size: 1rem;
+//   padding: 0.75rem 1.5rem;
+//   transition: background-color 0.3s ease;
+// }
+
+// .load-more:hover {
+//   background-color: #ff9900;
+//   color: #000000;
+// }
+
+/* Основные стили */
+
+body {
+  background-color: #dffcfc;
+  color: #333333;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Press Start 2P', monospace;
+  font-weight: normal;
+  margin: 0 0 1rem;
+}
+
+a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #f7ca18;
+}
+
+button {
+  background-color: #f7ca18;
+  border: none;
+  border-radius: 5px;
+  color: #333333;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #e67e22;
+}
+
+input[type="text"] {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #ffffff;
+  color: #ffffff;
+  font-size: 1.2rem;
+  margin-right: 1rem;
+  padding: 0.5rem;
+  transition: border-color 0.3s ease;
+  width: 100%;
+}
+
+input[type="text"]:focus {
+  border-color: #f7ca18;
+  outline: none;
+}
+
+/* Стили формы поиска */
+
+.search-form {
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+/* Стили галереи изображений */
+
+.gallery {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.gallery img {
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  display: block;
+  height: auto;
+  max-width: 100%;
+  transition: box-shadow 0.3s ease;
+}
+
+.gallery img:hover {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+  transform: scale(1.05);
+}
+
+/* Стили кнопки "Load more" */
+
+.load-more {
+  display: block;
+  margin: 2rem auto;
+  background-color: #f7ca18;
+  border: 2px solid #ffffff;
+  border-radius: 5px;
+  color: #333333;
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.load-more:hover {
+  background-color: #e67e22;
+  color: #333333;
+}
