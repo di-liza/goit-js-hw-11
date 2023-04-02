@@ -1,226 +1,145 @@
-.hidden {
-  display: none;
+* {
+  box-sizing: border-box;
 }
-// /* Основные стили */
-
-// body {
-//   background-color: #000000;
-//   color: #ffffff;
-//   font-family: 'Press Start 2P', monospace;
-//   font-size: 16px;
-//   line-height: 1.6;
-//   margin: 0;
-//   padding: 0;
-// }
-
-// h1,
-// h2,
-// h3,
-// h4,
-// h5,
-// h6 {
-//   font-family: 'Press Start 2P', monospace;
-//   font-weight: normal;
-//   margin: 0 0 1rem;
-// }
-
-// a {
-//   color: #ffffff;
-//   text-decoration: none;
-// }
-
-// a:hover {
-//   color: #ffcc00;
-// }
-
-// button {
-//   background-color: #ffcc00;
-//   border: none;
-//   border-radius: 5px;
-//   color: #000000;
-//   cursor: pointer;
-//   font-size: 1rem;
-//   padding: 0.75rem 1.5rem;
-//   transition: background-color 0.3s ease;
-// }
-
-// button:hover {
-//   background-color: #ff9900;
-// }
-
-// input[type="text"] {
-//   background-color: transparent;
-//   border: none;
-//   border-bottom: 2px solid #ffffff;
-//   color: #ffffff;
-//   font-size: 1.2rem;
-//   margin-right: 1rem;
-//   padding: 0.5rem;
-//   transition: border-color 0.3s ease;
-//   width: 100%;
-// }
-
-// input[type="text"]:focus {
-//   border-color: #ffcc00;
-//   outline: none;
-// }
-
-// /* Стили формы поиска */
-
-// .search-form {
-//   display: flex;
-//   margin-bottom: 2rem;
-// }
-
-// /* Стили галереи изображений */
-
-// .gallery {
-//   display: grid;
-//   grid-gap: 1rem;
-//   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-// }
-
-// .gallery img {
-//   border-radius: 5px;
-//   box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-//   display: block;
-//   height: auto;
-//   max-width: 100%;
-//   transition: box-shadow 0.3s ease;
-// }
-
-// .gallery img:hover {
-//   box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-//   transform: scale(1.05);
-// }
-
-// /* Стили кнопки "Load more" */
-
-// .load-more {
-//   display: block;
-//   margin: 2rem auto;
-//   background-color: #ffcc00;
-//   border: 2px solid #ffffff;
-//   border-radius: 5px;
-//   color: #000000;
-//   font-size: 1rem;
-//   padding: 0.75rem 1.5rem;
-//   transition: background-color 0.3s ease;
-// }
-
-// .load-more:hover {
-//   background-color: #ff9900;
-//   color: #000000;
-// }
-
-/* Основные стили */
 
 body {
-  background-color: #dffcfc;
-  color: #333333;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 16px;
-  line-height: 1.6;
+  background-color: #b9dcf3;
+  font-family: 'Press Start 2P', cursive;
   margin: 0;
   padding: 0;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: 'Press Start 2P', monospace;
-  font-weight: normal;
-  margin: 0 0 1rem;
-}
-
-a {
-  color: #ffffff;
-  text-decoration: none;
-}
-
-a:hover {
-  color: #f7ca18;
-}
-
-button {
-  background-color: #f7ca18;
-  border: none;
-  border-radius: 5px;
-  color: #333333;
-  cursor: pointer;
-  font-size: 1rem;
-  padding: 0.75rem 1.5rem;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #e67e22;
+.search-form {
+  margin-top: 40px;
+  text-align: center;
 }
 
 input[type="text"] {
   background-color: transparent;
   border: none;
-  border-bottom: 2px solid #ffffff;
-  color: #ffffff;
-  font-size: 1.2rem;
-  margin-right: 1rem;
-  padding: 0.5rem;
-  transition: border-color 0.3s ease;
+  border-bottom: 1px solid white;
+  color: white;
+  font-size: 16px;
+  padding: 10px 0;
+  width: 300px;
+  margin-right: 10px;
+}
+
+input[type="text"]::placeholder {
+  color: white;
+}
+
+.search-btn {
+  background-color:#6f76c7;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 10px 20px;
+}
+.search-btn:hover {
+  background-color: rgb(70, 41, 111);
+}
+.gallery {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  margin: 50px auto;
+  max-width: 1318px;
+}
+
+.photo-card {
+  height: 400px;
+    background-color: #1a1a1a;
+    border: 2px solid #6f76c7;
+    border-radius: 4px;
+    flex-direction: column;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+
+.photo-card:hover {
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}
+
+.photo-link {
+  display: block;
+  height: 100%;
+  position: relative;
+}
+
+.photo-link::after {
+  content: "";
+  display: block;
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  transition: all 0.3s ease;
+  width: 100%;
+  z-index: 1;
+}
+
+.photo-link:hover::after {
+  background-color: rgba(255, 255, 255, 0.1);
+  opacity: 1;
+}
+
+.photo-link img {
+  height: 100%;
+  object-fit: cover;
   width: 100%;
 }
 
-input[type="text"]:focus {
-  border-color: #f7ca18;
-  outline: none;
-}
-
-/* Стили формы поиска */
-
-.search-form {
+.info {
+color: #fff;
+  background-color: #676ca89c;
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
-  margin-bottom: 2rem;
+  gap: 12px;
+  justify-content: center;
 }
 
-/* Стили галереи изображений */
-
-.gallery {
-  display: grid;
-  grid-gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+.info-item {
+  font-size: 14px;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
-.gallery img {
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-  display: block;
-  height: auto;
-  max-width: 100%;
-  transition: box-shadow 0.3s ease;
+.info-item b {
+  margin-bottom: 5px;
+    font-size: 14px;
+    display: block;
 }
-
-.gallery img:hover {
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-  transform: scale(1.05);
-}
-
-/* Стили кнопки "Load more" */
 
 .load-more {
+  color: #fff;
+  cursor: pointer;
+  background-color: #6f76c7;
+  border: none;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
   display: block;
-  margin: 2rem auto;
-  background-color: #f7ca18;
-  border: 2px solid #ffffff;
-  border-radius: 5px;
-  color: #333333;
-  font-size: 1rem;
-  padding: 0.75rem 1.5rem;
-  transition: background-color 0.3s ease;
+}
+.load-more:hover {
+  background-color: rgb(70, 41, 111);
+}
+.hidden{
+  display: none;
+}
+.photo-link {
+  display: block;
+  text-align: center;
+  // margin-bottom: 10px;
 }
 
-.load-more:hover {
-  background-color: #e67e22;
-  color: #333333;
-}
+
