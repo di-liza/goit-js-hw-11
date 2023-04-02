@@ -26,7 +26,6 @@ function handlerSearchFromSubmit(event) {
       'Sorry, there are no images matching your search query. Please try again.'
     );
   }
-  refs.loadMoreBtnEl.classList.remove('hidden');
   pixabayApi.query = refs.searchFormInputEl.value.trim();
   getPhotos();
   refs.galleryEl.innerHTML = '';
@@ -50,6 +49,7 @@ function handleMoreBtnClick() {
 }
 
 async function getPhotos() {
+  refs.loadMoreBtnEl.classList.add('hidden');
   try {
     const { data } = await pixabayApi.fetchPhoto();
     checkTotalHits(data);
@@ -58,6 +58,7 @@ async function getPhotos() {
         'Sorry, there are no images matching your search query. Please try again.'
       );
     }
+    refs.loadMoreBtnEl.classList.remove('hidden');
     refs.galleryEl.insertAdjacentHTML('beforeend', renderMarkup(data.hits));
     smoothScrollAfterLoadMore();
     galleryLightbox.refresh();
