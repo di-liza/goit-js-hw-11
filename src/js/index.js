@@ -19,7 +19,7 @@ function onWindowScroll() {
   refs.loadMoreBtnEl.classList.add('hidden');
   const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
   if (scrollTop + clientHeight >= scrollHeight - 10) {
-    getPhotos();
+    loadMore();
   }
 }
 
@@ -28,7 +28,7 @@ refs.searchFormInputEl.addEventListener('input', () =>
   refs.loadMoreBtnEl.classList.add('hidden')
 );
 
-refs.loadMoreBtnEl.addEventListener('click', handleMoreBtnClick);
+refs.loadMoreBtnEl.addEventListener('click', loadMore);
 
 let galleryLightbox = new SimpleLightbox('.gallery .photo-link', {
   captionDelay: 250,
@@ -48,31 +48,29 @@ function handlerSearchFromSubmit(event) {
   refs.searchFormInputEl.value = '';
 }
 
-function handleMoreBtnClick() {
-  (async () => {
-    try {
-      pixabayApi.incrementPage();
-      const { data } = await pixabayApi.fetchPhoto();
+async function loadMore() {
+  try {
+    pixabayApi.incrementPage();
+    const { data } = await pixabayApi.fetchPhoto();
 
-      refs.galleryEl.insertAdjacentHTML('beforeend', renderMarkup(data.hits));
-      smoothScrollAfterLoadMore();
-      galleryLightbox.refresh();
-    } catch (error) {
-      console.log(error);
-      refs.loadMoreBtnEl.classList.add('hidden');
-    }
-  })();
+    refs.galleryEl.insertAdjacentHTML('beforeend', renderMarkup(data.hits));
+    smoothScrollAfterLoadMore();
+    galleryLightbox.refresh();
+  } catch (error) {
+    console.log(error);
+    refs.loadMoreBtnEl.classList.add('hidden');
+  }
 }
 
 async function getPhotos() {
   try {
     const { data } = await pixabayApi.fetchPhoto();
-    console.log(refs.searchFormEl.submitting);
     checkTotalHits(data);
     if (data.hits.length !== 0) {
       Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
-      refs.loadMoreBtnEl.classList.remove('hidden');
+      // refs.loadMoreBtnEl.classList.remove('hidden');
     }
+
     if (data.hits.length === 0) {
       refs.loadMoreBtnEl.classList.add('hidden');
       throw new Error();
@@ -92,11 +90,18 @@ async function getPhotos() {
 }
 
 function checkTotalHits(data) {
-  if (Math.ceil(data.totalHits / 40) === pixabayApi.page) {
+  if (Math.ceil(data.totalHits / 40) <= pixabayApi.page) {
+    if (data.hits.length === 0) {
+      refs.loadMoreBtnEl.classList.add('hidden');
+      throw new Error();
+    }
     refs.loadMoreBtnEl.classList.add('hidden');
     return Notiflix.Notify.info(
       `We're sorry, but you've reached the end of search results.`
     );
+  }
+  if (data.totalHits >= 40) {
+    refs.loadMoreBtnEl.classList.remove('hidden');
   }
 }
 
