@@ -10,18 +10,14 @@ export class PixabayApi {
   count = 40;
 
   async fetchPhoto() {
-    try {
-      return await axios.get(`${this.#BASE_URL}`, {
-        params: {
-          key: this.#API_KEY,
-          q: this.query,
-          page: this.page,
-          per_page: this.count,
-        },
-      });
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    return await axios.get(`${this.#BASE_URL}`, {
+      params: {
+        key: this.#API_KEY,
+        q: this.query,
+        page: this.page,
+        per_page: this.count,
+      },
+    });
   }
 
   incrementPage() {
