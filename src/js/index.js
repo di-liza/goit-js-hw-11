@@ -96,8 +96,7 @@ function checkTotalHits(data) {
       throw new Error();
     }
     refs.loadMoreBtnEl.classList.add('hidden');
-    refs.loaderEllips.classList.add('hidden');
-    console.log('The end');
+    refs.loaderEllips.style.display = 'none';
     return Notiflix.Notify.info(
       `We're sorry, but you've reached the end of search results.`
     );
