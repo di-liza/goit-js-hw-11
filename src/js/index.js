@@ -12,11 +12,11 @@ const pixabayApi = new PixabayApi();
 refs.switcher.addEventListener('change', switcherOn);
 
 function switcherOn() {
-  refs.loadMoreBtnEl.classList.add('hidden');
   window.addEventListener('scroll', debounce(onWindowScroll, 300));
 }
 function onWindowScroll() {
   refs.loaderEllips.classList.remove('hidden');
+  refs.loadMoreBtnEl.classList.add('hidden');
   const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
   if (scrollTop + clientHeight >= scrollHeight - 10) {
     getPhotos();
@@ -35,13 +35,14 @@ let galleryLightbox = new SimpleLightbox('.gallery .photo-link', {
   captionsData: 'alt',
 });
 
-async function handlerSearchFromSubmit(event) {
+function handlerSearchFromSubmit(event) {
   pixabayApi.resetPage();
   event.preventDefault();
   if (!refs.searchFormInputEl.value.trim()) {
     return;
   }
   pixabayApi.query = refs.searchFormInputEl.value.trim();
+
   getPhotos();
   refs.galleryEl.innerHTML = '';
   refs.searchFormInputEl.value = '';
@@ -53,7 +54,6 @@ function handleMoreBtnClick() {
       pixabayApi.incrementPage();
       const { data } = await pixabayApi.fetchPhoto();
 
-      checkTotalHits(data);
       refs.galleryEl.insertAdjacentHTML('beforeend', renderMarkup(data.hits));
       smoothScrollAfterLoadMore();
       galleryLightbox.refresh();
@@ -67,18 +67,12 @@ function handleMoreBtnClick() {
 async function getPhotos() {
   try {
     const { data } = await pixabayApi.fetchPhoto();
-
+    console.log(refs.searchFormEl.submitting);
+    checkTotalHits(data);
     if (data.hits.length !== 0) {
       Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
-    }
-
-    if (!refs.switcher.checked) {
-      window.removeEventListener('scroll', onWindowScroll);
       refs.loadMoreBtnEl.classList.remove('hidden');
-    } else {
-      refs.loadMoreBtnEl.classList.add('hidden');
     }
-
     if (data.hits.length === 0) {
       refs.loadMoreBtnEl.classList.add('hidden');
       throw new Error();
