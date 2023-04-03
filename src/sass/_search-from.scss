@@ -133,6 +133,121 @@ color: #fff;
 .load-more:hover {
   background-color: rgb(70, 41, 111);
 }
+// ===========
+.loader-ellips {
+  font-size: 20px;
+  /* change size here */
+  position: relative;
+  width: 4em;
+  height: 1em;
+  margin: 20px auto 50px auto;
+}
+
+.loader-ellips__dot {
+  display: block;
+  width: 1em;
+  height: 1em;
+  border-radius: 0.5em;
+  background: #555;
+  /* change color here */
+  position: absolute;
+  animation-duration: 0.5s;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
+}
+
+.loader-ellips__dot:nth-child(1),
+.loader-ellips__dot:nth-child(2) {
+  left: 0;
+}
+
+.loader-ellips__dot:nth-child(3) {
+  left: 1.5em;
+}
+
+.loader-ellips__dot:nth-child(4) {
+  left: 3em;
+}
+
+@keyframes reveal {
+  from {
+    transform: scale(0.001);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes slide {
+  to {
+    transform: translateX(1.5em)
+  }
+}
+
+.loader-ellips__dot:nth-child(1) {
+  animation-name: reveal;
+}
+
+.loader-ellips__dot:nth-child(2),
+.loader-ellips__dot:nth-child(3) {
+  animation-name: slide;
+}
+
+.loader-ellips__dot:nth-child(4) {
+  animation-name: reveal;
+  animation-direction: reverse;
+}
+// =========
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.toggle-switch__label {
+  margin: 0 5px;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+  color: #333;
+}
+
+.toggle-switch__slider {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 20px;
+  margin: 0 5px;
+}
+
+.toggle-switch__slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"]:checked+.toggle-switch__slider {
+  background-color: #6f76c7;
+}
+
+input[type="checkbox"]:checked+.toggle-switch__slider:before {
+  transform: translateX(20px);
+}
+// ==============
 .hidden{
   display: none;
 }

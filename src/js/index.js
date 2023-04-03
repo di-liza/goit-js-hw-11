@@ -5,9 +5,24 @@ import '../sass/index.scss';
 import { PixabayApi } from './pixabay-api';
 import { refs } from './refs';
 import { renderMarkup } from './renderGallery';
-import InfiniteScroll from 'infinite-scroll';
+// import { debounce } from 'lodash.debounce';
+const debounce = require('lodash.debounce');
 
 const pixabayApi = new PixabayApi();
+
+refs.switcher.addEventListener('change', switcherOn);
+
+function switcherOn() {
+  refs.loadMoreBtnEl.classList.add('hidden');
+  window.addEventListener('scroll', debounce(onWindowScroll, 500));
+}
+function onWindowScroll() {
+  refs.loaderEllips.classList.remove('hidden');
+  const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+  if (scrollTop + clientHeight >= scrollHeight - 10) {
+    getPhotos();
+  }
+}
 
 refs.searchFormEl.addEventListener('submit', handlerSearchFromSubmit);
 refs.searchFormInputEl.addEventListener('input', handlerSearchInput);
@@ -49,16 +64,22 @@ function handleMoreBtnClick() {
 }
 
 async function getPhotos() {
-  refs.loadMoreBtnEl.classList.add('hidden');
   try {
     const { data } = await pixabayApi.fetchPhoto();
     checkTotalHits(data);
+    if (!refs.switcher.checked) {
+      window.removeEventListener('scroll', onWindowScroll);
+      refs.loadMoreBtnEl.classList.remove('hidden');
+    } else {
+      refs.loadMoreBtnEl.classList.add('hidden');
+    }
     if (data.hits.length === 0) {
-      return Notiflix.Notify.info(
+      refs.loadMoreBtnEl.classList.add('hidden');
+      refs.loaderEllips.classList.add('hidden');
+      return Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
     }
-    refs.loadMoreBtnEl.classList.remove('hidden');
     refs.galleryEl.insertAdjacentHTML('beforeend', renderMarkup(data.hits));
     smoothScrollAfterLoadMore();
     galleryLightbox.refresh();
@@ -72,14 +93,17 @@ function handlerSearchInput() {
 }
 
 function checkTotalHits(data) {
-  if (data.totalHits < 500) {
-    Notiflix.Notify.info(
+  if (data.totalHits < 500 && data.hits.length !== 0) {
+    refs.loadMoreBtnEl.classList.add('hidden');
+    return Notiflix.Notify.info(
       `We're sorry, but you've reached the end of search results.`
     );
-    refs.loadMoreBtnEl.classList.add('hidden');
-    return;
   }
-  Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images.`);
+  if (data.hits.length !== 0) {
+    return Notiflix.Notify.success(
+      `Hooray! We found ${data.totalHits} images.`
+    );
+  }
 }
 
 function smoothScrollAfterLoadMore() {
@@ -90,5 +114,6 @@ function smoothScrollAfterLoadMore() {
   window.scrollBy({
     top: cardHeight * 2,
     behavior: 'smooth',
+    scroll: function () {},
   });
 }

@@ -8,6 +8,13 @@
     <title>HW-11</title>
   </head>
   <body>
+    <div class="toggle-switch">
+      <label>
+        <input id="toggle-switch" type="checkbox" />
+        <span class="toggle-switch__slider"></span>
+      </label>
+      <span class="toggle-switch__label">Infinity Scroll</span>
+    </div>
     <form class="search-form" id="search-form">
       <input
         type="text"
@@ -22,7 +29,14 @@
       <!-- Картки зображень -->
     </div>
 
-    <button type="button" class="load-more hidden">Load more</button>
+    <div class="loader-ellips hidden">
+      <span class="loader-ellips__dot"></span>
+      <span class="loader-ellips__dot"></span>
+      <span class="loader-ellips__dot"></span>
+      <span class="loader-ellips__dot"></span>
+    </div>
+
+    <button type="button" class="load-more">Load more</button>
 
     <script src="./js/index.js" type="module"></script>
   </body>

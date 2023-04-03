@@ -4,4 +4,6 @@ export const refs = {
   searchBtnEl: document.querySelector('.search-btn'),
   loadMoreBtnEl: document.querySelector('.load-more'),
   galleryEl: document.querySelector('.gallery'),
+  loaderEllips: document.querySelector('.loader-ellips'),
+  switcher: document.querySelector('#toggle-switch'),
 };
