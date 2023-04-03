@@ -13,7 +13,7 @@ refs.switcher.addEventListener('change', switcherOn);
 
 function switcherOn() {
   refs.loadMoreBtnEl.classList.add('hidden');
-  window.addEventListener('scroll', debounce(onWindowScroll, 500));
+  window.addEventListener('scroll', debounce(onWindowScroll, 300));
 }
 function onWindowScroll() {
   refs.loaderEllips.classList.remove('hidden');
@@ -52,6 +52,7 @@ function handleMoreBtnClick() {
     try {
       pixabayApi.incrementPage();
       const { data } = await pixabayApi.fetchPhoto();
+
       checkTotalHits(data);
       refs.galleryEl.insertAdjacentHTML('beforeend', renderMarkup(data.hits));
       smoothScrollAfterLoadMore();
@@ -67,17 +68,22 @@ async function getPhotos() {
   try {
     const { data } = await pixabayApi.fetchPhoto();
 
-    checkTotalHits(data);
+    if (data.hits.length !== 0) {
+      Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
+    }
+
     if (!refs.switcher.checked) {
       window.removeEventListener('scroll', onWindowScroll);
       refs.loadMoreBtnEl.classList.remove('hidden');
     } else {
       refs.loadMoreBtnEl.classList.add('hidden');
     }
+
     if (data.hits.length === 0) {
       refs.loadMoreBtnEl.classList.add('hidden');
       throw new Error();
     }
+
     refs.galleryEl.insertAdjacentHTML('beforeend', renderMarkup(data.hits));
     smoothScrollAfterLoadMore();
     galleryLightbox.refresh();
@@ -92,11 +98,6 @@ async function getPhotos() {
 }
 
 function checkTotalHits(data) {
-  // data.totalHits < 500 && data.hits.length !== 0
-  if (data.hits.length !== 0) {
-    Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
-  }
-
   if (Math.ceil(data.totalHits / 40) === pixabayApi.page) {
     refs.loadMoreBtnEl.classList.add('hidden');
     return Notiflix.Notify.info(
