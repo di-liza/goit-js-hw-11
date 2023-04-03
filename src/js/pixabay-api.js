@@ -8,6 +8,9 @@ export class PixabayApi {
   query = null;
   page = 1;
   count = 40;
+  image_type = 'photo';
+  orientation = 'horizontal';
+  safesearch = true;
 
   async fetchPhoto() {
     return await axios.get(`${this.#BASE_URL}`, {
@@ -16,6 +19,9 @@ export class PixabayApi {
         q: this.query,
         page: this.page,
         per_page: this.count,
+        image_type: this.image_type,
+        orientation: this.orientation,
+        safesearch: this.safesearch,
       },
     });
   }

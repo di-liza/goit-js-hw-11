@@ -1,17 +1,17 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from 'notiflix';
-import '../sass/index.scss';
-import { PixabayApi } from './pixabay-api';
-import { refs } from './refs';
-import { renderMarkup } from './renderGallery';
+import './sass/index.scss';
+import { PixabayApi } from './js/pixabay-api';
+import { refs } from './js/refs';
+import { renderMarkup } from './js/renderGallery';
 const debounce = require('lodash.debounce');
 
 const pixabayApi = new PixabayApi();
 
-refs.switcher.addEventListener('change', switcherOn);
+refs.switcher.addEventListener('change', attachScrollListener);
 
-function switcherOn() {
+function attachScrollListener() {
   window.addEventListener('scroll', debounce(onWindowScroll, 300));
 }
 function onWindowScroll() {
@@ -23,11 +23,10 @@ function onWindowScroll() {
   }
 }
 
-refs.searchFormEl.addEventListener('submit', handlerSearchFromSubmit);
+refs.searchFormEl.addEventListener('submit', handleSearchFormSubmit);
 refs.searchFormInputEl.addEventListener('input', () =>
   refs.loadMoreBtnEl.classList.add('hidden')
 );
-
 refs.loadMoreBtnEl.addEventListener('click', loadMore);
 
 let galleryLightbox = new SimpleLightbox('.gallery .photo-link', {
@@ -35,7 +34,7 @@ let galleryLightbox = new SimpleLightbox('.gallery .photo-link', {
   captionsData: 'alt',
 });
 
-function handlerSearchFromSubmit(event) {
+function handleSearchFormSubmit(event) {
   pixabayApi.resetPage();
   event.preventDefault();
   if (!refs.searchFormInputEl.value.trim()) {
@@ -68,7 +67,6 @@ async function getPhotos() {
     checkTotalHits(data);
     if (data.hits.length !== 0) {
       Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
-      // refs.loadMoreBtnEl.classList.remove('hidden');
     }
 
     if (data.hits.length === 0) {
@@ -77,7 +75,6 @@ async function getPhotos() {
     }
 
     refs.galleryEl.insertAdjacentHTML('beforeend', renderMarkup(data.hits));
-    smoothScrollAfterLoadMore();
     galleryLightbox.refresh();
   } catch (error) {
     console.log(error);
