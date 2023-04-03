@@ -52,7 +52,7 @@ async function loadMore() {
   try {
     pixabayApi.incrementPage();
     const { data } = await pixabayApi.fetchPhoto();
-
+    checkTotalHits(data);
     refs.galleryEl.insertAdjacentHTML('beforeend', renderMarkup(data.hits));
     smoothScrollAfterLoadMore();
     galleryLightbox.refresh();
@@ -96,6 +96,8 @@ function checkTotalHits(data) {
       throw new Error();
     }
     refs.loadMoreBtnEl.classList.add('hidden');
+    refs.loaderEllips.classList.add('hidden');
+    console.log('The end');
     return Notiflix.Notify.info(
       `We're sorry, but you've reached the end of search results.`
     );
