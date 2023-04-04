@@ -5,29 +5,42 @@ import './sass/index.scss';
 import { PixabayApi } from './js/pixabay-api';
 import { refs } from './js/refs';
 import { renderMarkup } from './js/renderGallery';
-const debounce = require('lodash.debounce');
 
 const pixabayApi = new PixabayApi();
+let isDataRecived = false;
+let isAEndCollection = false;
 
 refs.switcher.addEventListener('change', attachScrollListener);
-
-function attachScrollListener() {
-  window.addEventListener('scroll', debounce(onWindowScroll, 300));
-}
-function onWindowScroll() {
-  refs.loaderEllips.classList.remove('hidden');
-  refs.loadMoreBtnEl.classList.add('hidden');
-  const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-  if (scrollTop + clientHeight >= scrollHeight - 10) {
-    loadMore();
-  }
-}
-
 refs.searchFormEl.addEventListener('submit', handleSearchFormSubmit);
 refs.searchFormInputEl.addEventListener('input', () =>
   refs.loadMoreBtnEl.classList.add('hidden')
 );
 refs.loadMoreBtnEl.addEventListener('click', loadMore);
+
+function attachScrollListener() {
+  window.addEventListener('scroll', onWindowScroll);
+}
+function onWindowScroll() {
+  refs.loaderEllips.classList.remove('hidden');
+  refs.loadMoreBtnEl.classList.add('hidden');
+  const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+  if (
+    scrollTop + clientHeight >= scrollHeight - 10 &&
+    !isDataRecived &&
+    refs.switcher.checked
+  ) {
+    loadMore();
+  }
+  if (!refs.switcher.checked && !isAEndCollection) {
+    window.removeEventListener('scroll', onWindowScroll);
+    refs.loaderEllips.style.display = 'none';
+    refs.loadMoreBtnEl.style.display = 'block';
+  }
+  if (refs.switcher.checked) {
+    refs.loaderEllips.style.display = 'block';
+    refs.loadMoreBtnEl.style.display = 'none';
+  }
+}
 
 let galleryLightbox = new SimpleLightbox('.gallery .photo-link', {
   captionDelay: 250,
@@ -37,10 +50,11 @@ let galleryLightbox = new SimpleLightbox('.gallery .photo-link', {
 function handleSearchFormSubmit(event) {
   pixabayApi.resetPage();
   event.preventDefault();
-  if (!refs.searchFormInputEl.value.trim()) {
+  pixabayApi.query = refs.searchFormInputEl.value.trim();
+
+  if (!pixabayApi.query) {
     return;
   }
-  pixabayApi.query = refs.searchFormInputEl.value.trim();
 
   getPhotos();
   refs.galleryEl.innerHTML = '';
@@ -48,6 +62,11 @@ function handleSearchFormSubmit(event) {
 }
 
 async function loadMore() {
+  if (isDataRecived) {
+    return;
+  }
+  isDataRecived = true;
+
   try {
     pixabayApi.incrementPage();
     const { data } = await pixabayApi.fetchPhoto();
@@ -55,6 +74,7 @@ async function loadMore() {
     refs.galleryEl.insertAdjacentHTML('beforeend', renderMarkup(data.hits));
     smoothScrollAfterLoadMore();
     galleryLightbox.refresh();
+    isDataRecived = false;
   } catch (error) {
     console.log(error);
     refs.loadMoreBtnEl.classList.add('hidden');
@@ -64,7 +84,6 @@ async function loadMore() {
 async function getPhotos() {
   try {
     const { data } = await pixabayApi.fetchPhoto();
-    checkTotalHits(data);
     if (data.hits.length !== 0) {
       Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
     }
@@ -73,6 +92,7 @@ async function getPhotos() {
       refs.loadMoreBtnEl.classList.add('hidden');
       throw new Error();
     }
+    checkTotalHits(data);
 
     refs.galleryEl.insertAdjacentHTML('beforeend', renderMarkup(data.hits));
     galleryLightbox.refresh();
@@ -87,13 +107,11 @@ async function getPhotos() {
 }
 
 function checkTotalHits(data) {
-  if (Math.ceil(data.totalHits / 40) <= pixabayApi.page) {
-    if (data.hits.length === 0) {
-      refs.loadMoreBtnEl.classList.add('hidden');
-      throw new Error();
-    }
-    refs.loadMoreBtnEl.classList.add('hidden');
+  if (data.totalHits / 40 <= pixabayApi.page) {
+    window.removeEventListener('scroll', onWindowScroll);
+    isAEndCollection = true;
     refs.loaderEllips.style.display = 'none';
+    refs.loadMoreBtnEl.style.display = 'none';
     return Notiflix.Notify.info(
       `We're sorry, but you've reached the end of search results.`
     );
