@@ -100,7 +100,7 @@ async function getPhotos() {
     console.log(error);
     refs.loadMoreBtnEl.classList.add('hidden');
     refs.loaderEllips.classList.add('hidden');
-    return Notiflix.Notify.failure(
+     Notiflix.Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
     );
   }
